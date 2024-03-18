@@ -54,8 +54,9 @@ This function should only modify configuration layer settings."
             shell-default-shell 'vterm)
      (shell-scripts :variables shell-scripts-format-on-save t)
      ;; spell-checking
-     ;; syntax-checking
      sql
+     ;; syntax-checking
+     systemd
      treemacs
      version-control
      yaml
