@@ -1,0 +1,43 @@
+#
+# ~/.bashrc
+#
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+
+# Define the function
+function ec {
+	nohup emacsclient -c -a '' "$@" >/dev/null 2>&1 &
+}
+
+# Alias definitions
+alias emacs='ec'
+alias vim='ec'
+alias vi="emacsclient -t -a ''"
+
+PS1='[\u@\h \W]\$ '
+
+export http_proxy=http://localhost:7890
+export https_proxy=http://localhost:7890
+export HTTP_PROXY=$http_proxy
+export HTTPS_PROXY=$https_proxy
+export EDITOR="emacsclient -c -a ''"
+
+# Start ssh-agent and add keys
+if ! pgrep -u "$USER" ssh-agent >/dev/null; then
+	ssh-agent >~/.ssh-agent-thing
+fi
+if [[ ! "$SSH_AUTH_SOCK" ]]; then
+	eval "$(<~/.ssh-agent-thing)" >/dev/null
+fi
+ssh-add ~/.ssh/id_* &>/dev/null
+
+# Initialize fasd
+eval "$(fasd --init auto)"
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
