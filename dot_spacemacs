@@ -28,7 +28,7 @@ This function should only modify configuration layer settings."
 
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. "~/.mycontribs/")
-   dotspacemacs-configuration-layer-path '("~/.spacemacs.d/")
+   dotspacemacs-configuration-layer-path '("~/.spacemacs.d/layers/")
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
@@ -47,7 +47,14 @@ This function should only modify configuration layer settings."
      ;; lsp
      markdown
      multiple-cursors
-     org
+     (org :variables
+          ;; org-enable-github-support t
+          ;; org-enable-org-journal-support t
+          org-enable-jira-support t
+          org-enable-roam-support t
+          org-enable-roam-ui t
+          org-enable-roam-protocol t
+          )
      semantic
      (shell :variables shell-default-height 30
             shell-default-position 'bottom
@@ -586,6 +593,11 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+  ;; fix spacemacs env not loaded when starting emacs as daemon
+  (message "Fixing spacemacs env not loaded...")
+  (setq spacemacs--spacemacs-env-loaded t)
+  (spacemacs//init-spacemacs-env)
+  (load-env-vars spacemacs-env-vars-file)
 
   ;; --------------
   ;; Github Copilot
@@ -598,6 +610,7 @@ before packages are loaded."
     (delq 'company-preview-if-just-one-frontend company-frontends))
 
   (with-eval-after-load 'copilot
+    (setq copilot-indent-offset-warning-disable t)
     (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
     (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
     (define-key copilot-completion-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
@@ -618,6 +631,50 @@ before packages are loaded."
   ;; -------
   (setq paradox-github-token (getenv "PARADOX_GITHUB_TOKEN"))
 
+  ;; -----------
+  ;; org-journal
+  ;; -----------
+  ;; (setq org-journal-dir "~/Dropbox/org/journal/"
+  ;;       org-journal-file-format "%Y-%m-%d"
+  ;;       org-journal-date-prefix "#+TITLE: "
+  ;;       org-journal-date-format "%A, %B %d %Y"
+  ;;       org-journal-time-prefix "* "
+  ;;       org-journal-time-format ""
+  ;;       )
+
+  ;; ----
+  ;; Jira
+  ;; ----
+  (setq jiralib-token (getenv "JIRA_COOKIE")
+        jiralib-url (getenv "JIRA_URL")
+        org-jira-done-states '("Closed" "Resolved" "Done" "Abandoned")
+        )
+
+  ;; ------------
+  ;; Shell / Term
+  ;; ------------
+  ;; Default terminal in EndeavourOS (i3) is xfce4-terminal
+  (setq terminal-here-terminal-command '("xfce4-terminal" "--working-directory" "."))
+
+  ;; --------
+  ;; Org-Roam
+  ;; --------
+
+
+  ;; ----
+  ;; MISC
+  ;; ----
+  ;; Exclude ox-ofm and org-journal from list of packages to upgrade (doesn't work)
+  ;; (defun my-package-menu-exclude-packages (orig-fun &rest args)
+  ;;   "Exclude specific packages from being listed for upgrade."
+  ;;   (let ((excluded-packages '("ox-ofm" "org-journal")))
+  ;;     (apply orig-fun args)
+  ;;     (dolist (package excluded-packages)
+  ;;       (package-menu-filter-by-name (format "^%s$" package))
+  ;;       (package-menu-mark-delete 1))))
+
+  ;; (advice-add 'package-menu--generate :around #'my-package-menu-exclude-packages)
+
 )
 
 
@@ -634,7 +691,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(chezmoi evil-org gnuplot htmlize org-cliplink org-contrib org-download org-mime org-pomodoro alert log4e gntp org-present org-projectile org-project-capture org-category-capture org-rich-yank orgit-forge orgit sql-indent ejc-sql clomacs simple-httpd cider sesman parseedn clojure-mode parseclj git-commit-jira-prefix copilot yaml-mode company-shell fish-mode flycheck-bashate insert-shebang shfmt reformatter srefactor stickyfunc-enhance yasnippet-snippets xterm-color ws-butler writeroom-mode winum which-key wgrep volatile-highlights vim-powerline vi-tilde-fringe uuidgen unfill undo-tree treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toc-org terminal-here term-cursor symon symbol-overlay string-inflection string-edit-at-point spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smex smeargle shell-pop restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless mwim multi-vterm multi-term multi-line markdown-toc macrostep lorem-ipsum link-hint ivy-yasnippet ivy-xref ivy-purpose ivy-hydra ivy-avy inspector info+ indent-guide hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt helm-make google-translate golden-ratio gitignore-templates git-timemachine git-modes git-messenger git-link gh-md forge flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-snipe evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emr elisp-slime-nav elisp-def editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish diff-hl devdocs define-word counsel-projectile company column-enforce-mode clean-aindent-mode centered-cursor-mode browse-at-remote auto-yasnippet auto-highlight-symbol auto-compile async all-the-icons aggressive-indent ace-link))
+   '(org-jira org-journal org-roam-ui websocket org-roam ox-gfm ox-jira chezmoi evil-org gnuplot htmlize org-cliplink org-contrib org-download org-mime org-pomodoro alert log4e gntp org-present org-projectile org-project-capture org-category-capture org-rich-yank orgit-forge orgit sql-indent ejc-sql clomacs simple-httpd cider sesman parseedn clojure-mode parseclj git-commit-jira-prefix copilot yaml-mode company-shell fish-mode flycheck-bashate insert-shebang shfmt reformatter srefactor stickyfunc-enhance yasnippet-snippets xterm-color ws-butler writeroom-mode winum which-key wgrep volatile-highlights vim-powerline vi-tilde-fringe uuidgen unfill undo-tree treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toc-org terminal-here term-cursor symon symbol-overlay string-inflection string-edit-at-point spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smex smeargle shell-pop restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless mwim multi-vterm multi-term multi-line markdown-toc macrostep lorem-ipsum link-hint ivy-yasnippet ivy-xref ivy-purpose ivy-hydra ivy-avy inspector info+ indent-guide hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt helm-make google-translate golden-ratio gitignore-templates git-timemachine git-modes git-messenger git-link gh-md forge flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-snipe evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emr elisp-slime-nav elisp-def editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish diff-hl devdocs define-word counsel-projectile company column-enforce-mode clean-aindent-mode centered-cursor-mode browse-at-remote auto-yasnippet auto-highlight-symbol auto-compile async all-the-icons aggressive-indent ace-link))
  '(paradox-automatically-star nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
