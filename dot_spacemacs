@@ -659,7 +659,7 @@ before packages are loaded."
   ;; --------
   ;; Org-Roam
   ;; --------
-
+  (setq org-roam-directory "~/Dropbox/RoamFiles")
 
   ;; ----
   ;; MISC
