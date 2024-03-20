@@ -1,0 +1,10 @@
+export TERMINAL=xfce4-terminal
+#export QT_QPA_PLATFORMTHEME=qt5ct
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+PATH="$HOME/.local/bin:$PATH"
+export npm_config_prefix="$HOME/.local"
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
