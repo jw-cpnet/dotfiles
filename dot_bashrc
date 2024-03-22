@@ -10,7 +10,7 @@ alias grep='grep --color=auto'
 
 # Define the function
 function ec {
-	nohup emacsclient -c -a '' "$@" >/dev/null 2>&1 &
+	nohup emacsclient -r -a '' "$@" >/dev/null 2>&1 &
 }
 
 # Alias definitions
