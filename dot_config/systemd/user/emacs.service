@@ -3,7 +3,8 @@ Description=Emacs: the extensible, self-documenting text editor
 
 [Service]
 Type=forking
-Environment="LC_CTYPE=zh_CN.UTF-8"
+Environment="XMODIFIERS=@im=fcitx"
+Environment="GTK_IM_MODULE=fcitx"
 ExecStart=/usr/bin/emacs --daemon
 ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
 Restart=always
