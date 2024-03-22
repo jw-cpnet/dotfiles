@@ -88,7 +88,7 @@ This function should only modify configuration layer settings."
      (git-commit-jira-prefix :location (recipe :fetcher github
                                                :repo "chrisbarrett/git-commit-jira-prefix"
                                                :files ("*.el")))
-     rime)
+     fcitx)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
@@ -686,11 +686,20 @@ before packages are loaded."
   ;; ----
   ;; Rime
   ;; ----
-  (with-eval-after-load 'rime
-    (setq rime-show-candidate 'posframe
-          rime-posframe-style 'vertical
-          rime-user-data-dir "~/.spacemacs.d/rime/")
-    )
+  ;; (with-eval-after-load 'rime
+  ;;   (setq rime-show-candidate 'posframe
+  ;;         rime-posframe-style 'vertical
+  ;;         rime-user-data-dir "~/.spacemacs.d/rime/")
+  ;;   )
+
+  ;; -----
+  ;; fcitx
+  ;; -----
+  (fcitx-evil-turn-on)
+  (setq fcitx-active-evil-states '(insert emacs hybrid)
+        fcitx-remote-command "fcitx5-remote")
+  (fcitx-default-setup)
+  (fcitx-prefix-keys-add "M-m" "C-M-m")
 )
 
 
@@ -706,7 +715,6 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default-input-method "rime")
  '(package-selected-packages
    '(rime org-jira org-journal org-roam-ui websocket org-roam ox-gfm ox-jira chezmoi evil-org gnuplot htmlize org-cliplink org-contrib org-download org-mime org-pomodoro alert log4e gntp org-present org-projectile org-project-capture org-category-capture org-rich-yank orgit-forge orgit sql-indent ejc-sql clomacs simple-httpd cider sesman parseedn clojure-mode parseclj git-commit-jira-prefix copilot yaml-mode company-shell fish-mode flycheck-bashate insert-shebang shfmt reformatter srefactor stickyfunc-enhance yasnippet-snippets xterm-color ws-butler writeroom-mode winum which-key wgrep volatile-highlights vim-powerline vi-tilde-fringe uuidgen unfill undo-tree treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toc-org terminal-here term-cursor symon symbol-overlay string-inflection string-edit-at-point spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smex smeargle shell-pop restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless mwim multi-vterm multi-term multi-line markdown-toc macrostep lorem-ipsum link-hint ivy-yasnippet ivy-xref ivy-purpose ivy-hydra ivy-avy inspector info+ indent-guide hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt helm-make google-translate golden-ratio gitignore-templates git-timemachine git-modes git-messenger git-link gh-md forge flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-snipe evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emr elisp-slime-nav elisp-def editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish diff-hl devdocs define-word counsel-projectile company column-enforce-mode clean-aindent-mode centered-cursor-mode browse-at-remote auto-yasnippet auto-highlight-symbol auto-compile async all-the-icons aggressive-indent ace-link))
  '(paradox-automatically-star nil))
