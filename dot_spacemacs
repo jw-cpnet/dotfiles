@@ -660,12 +660,14 @@ before packages are loaded."
   ;;       org-journal-time-format ""
   ;;       )
 
+
   ;; ----
   ;; Jira
   ;; ----
   (setq jiralib-token (getenv "JIRA_COOKIE")
         jiralib-url (getenv "JIRA_URL")
-        org-jira-done-states '("Closed" "Resolved" "Done" "Abandoned"))
+        org-jira-done-states '("Closed" "Resolved" "Done" "Abandoned")
+        org-jira-working-dir "~/.spacemacs.d/jira")
 
   ;; ------------
   ;; Shell / Term
