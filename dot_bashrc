@@ -16,7 +16,8 @@ function ec {
 # Alias definitions
 alias emacs='ec'
 alias vim='ec'
-alias vi="emacsclient -t -a ''"
+alias vi='emacsclient -t -a ""'
+alias scp='rsync -aHAxvs --numeric-ids -P -e "ssh -T -c aes256-gcm@openssh.com -o Compression=no -x"'
 
 PS1='[\u@\h \W]\$ '
 
