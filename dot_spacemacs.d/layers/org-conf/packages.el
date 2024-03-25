@@ -193,6 +193,53 @@
     (add-to-list 'org-tempo-keywords-alist templ))
 
   (require 'org-jira)
+
+  (defvar org-jira-browse-issue-from-agenda nil
+    "Non-nil if `org-jira-browse-issue' was called from an `org-agenda' buffer.")
+
+  (defun org-jira-browse-issue-advice (orig-fun &rest args)
+    "Advice for `org-jira-browse-issue'.
+  If called from an `org-agenda' buffer and the cursor is on an agenda entry,
+  visit the corresponding org buffer, call the original function, and then
+  switch back to the `org-agenda' buffer with the cursor at the same position."
+    (let ((marker (when (and (eq major-mode 'org-agenda-mode)
+                            (get-text-property (point) 'org-marker))
+                    (get-text-property (point) 'org-marker))))
+      (if marker
+          (progn
+            (setq org-jira-browse-issue-from-agenda t)
+            (save-excursion
+              (org-agenda-goto marker)
+              (message "Visiting org item: %s" (org-get-heading t t))
+              (apply orig-fun args)))
+        (apply orig-fun args))))
+
+  (advice-add 'org-jira-browse-issue :around #'org-jira-browse-issue-advice)
+
+
+  (defvar org-jira-refresh-issue-from-agenda nil
+    "Non-nil if `org-jira-refresh-issue' was called from an `org-agenda' buffer.")
+
+  (defun org-jira-refresh-issue-advice (orig-fun &rest args)
+    "Advice for `org-jira-refresh-issue'.
+  If called from an `org-agenda' buffer and the cursor is on an agenda entry,
+  visit the corresponding org buffer, call the original function, and then
+  switch back to the `org-agenda' buffer with the cursor at the same position."
+    (let ((marker (when (and (eq major-mode 'org-agenda-mode)
+                            (get-text-property (point) 'org-marker))
+                    (get-text-property (point) 'org-marker))))
+      (if marker
+          (progn
+            (setq org-jira-refresh-issue-from-agenda t)
+            (save-excursion
+              (org-agenda-goto marker)
+              (message "Visiting org item: %s"
+                      (org-get-heading t t))
+              (apply orig-fun args)))
+        (apply orig-fun args))))
+
+  (advice-add 'org-jira-refresh-issue :around #'org-jira-refresh-issue-advice)
+
   ;; Files
   (setq org-directory "~/Dropbox/org-new")
   ;; (setq org-agenda-files (list "inbox.org" "agenda.org" "notes.org" "projects.org"))
