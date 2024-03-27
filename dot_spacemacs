@@ -99,11 +99,12 @@ This function should only modify configuration layer settings."
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '(
                                     auto-dictionary
+                                    chinese-conv
+                                    pangu-spacing
                                     pyim
                                     pyim-basedict
                                     pyim-wbdict
-                                    pangu-spacing
-                                    chinese-conv
+                                    tern
                                     )
 
    ;; Defines the behaviour of Spacemacs when installing packages.
