@@ -78,6 +78,10 @@
   "Custom org keyword templates.")
 
 
+(defvar org-conf-enable-jira-issues-in-org-agenda nil
+  "Flag to enable JIRA issues in org agenda buffer.")
+
+
 (defun org-conf/post-init-counsel ()
   (defun org-conf//insert-selection-as-org-link (x)
     (with-ivy-window (insert (format "[[%s]]" x))
@@ -195,7 +199,8 @@
   (setq org-agenda-files
         (mapcar 'file-truename
                 (let ((agenda-files (file-expand-wildcards "~/Dropbox/org-new/*.org")))
-                  (if (boundp 'org-jira-working-dir)
+                  (if (and (boundp 'org-jira-working-dir)
+                           org-conf-enable-jira-issues-in-org-agenda)
                       (append (file-expand-wildcards (concat org-jira-working-dir "/*.org")) agenda-files)
                     ;; (append (directory-files org-jira-working-dir t "^\[^.\].*\\.org$") agenda-files)
                     agenda-files))
