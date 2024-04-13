@@ -342,6 +342,7 @@ assign [class="TelegramDesktop"] $ws5
 assign [class="Slack"] $ws5
 assign [class="Microsoft Teams - Preview"] $ws5
 assign [class="Thunar"] $ws6
+assign [class="Gstm"] $ws10
 
 # automatic set focus new window if it opens on another workspace than the current:
 for_window [class=Xfce4-terminal] focus
@@ -354,6 +355,7 @@ for_window [class=Slack] focus
 for_window [class=TelegramDesktop] focus
 for_window [class="Microsoft Teams - Preview"] focus
 for_window [class=Thunar] focus
+for_window [class=Gstm] focus
 
 ##############
 # compositor #
