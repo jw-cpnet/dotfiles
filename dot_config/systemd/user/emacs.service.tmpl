@@ -5,6 +5,7 @@ Description=Emacs: the extensible, self-documenting text editor
 Type=forking
 Environment="XMODIFIERS=@im=fcitx"
 Environment="GTK_IM_MODULE=fcitx"
+ExecStartPre=/home/{{ .chezmoi.username }}/.spacemacs.d/scripts/update_ssh_auth_sock.sh
 ExecStart=/usr/bin/emacs --daemon
 ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
 Restart=always
