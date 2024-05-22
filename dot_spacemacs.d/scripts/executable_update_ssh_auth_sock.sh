@@ -1,13 +1,12 @@
 #!/bin/bash
-
-# Get the value of SSH_AUTH_SOCK from the environment
 new_auth_sock=$(echo $SSH_AUTH_SOCK)
 
-# Check if SSH_AUTH_SOCK is set and valid
-if [[ -z "$new_auth_sock" || ! -S "$new_auth_sock" ]]; then
-    echo "Error: SSH_AUTH_SOCK is not set or invalid." >&2
-    exit 1
+# Prioritize non-gcr agent if available
+if [[ "$new_auth_sock" != "/run/user/1001/gcr/ssh" && -S "$new_auth_sock" ]]; then
+	sed -i.bak -E "s|^SSH_AUTH_SOCK=.*|SSH_AUTH_SOCK=$new_auth_sock|" ~/.spacemacs.d/.spacemacs.env
+elif [[ -S "/run/user/1001/gcr/ssh" ]]; then # Fallback to gcr agent if it exists
+	sed -i.bak -E "s|^SSH_AUTH_SOCK=.*|SSH_AUTH_SOCK=/run/user/1001/gcr/ssh|" ~/.spacemacs.d/.spacemacs.env
+else
+	echo "Error: No valid SSH_AUTH_SOCK found." >&2
+	exit 1
 fi
-
-# Replace the line in the config file using sed (with backup)
-sed -i.bak -E "s|^SSH_AUTH_SOCK=.*|SSH_AUTH_SOCK=$new_auth_sock|" ~/.spacemacs.d/.spacemacs.env
