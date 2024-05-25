@@ -334,6 +334,7 @@ workspace $ws6 output HDMI-0
 # bind program to workspace and focus to them on startup:
 assign [class="Xfce4-terminal"] $ws1
 assign [class="Emacs"] $ws2
+assign [class="Code"] $ws2
 assign [class="jetbrains-pycharm"] $ws2
 assign [class="jetbrains-datagrip"] $ws2
 assign [class="Google-chrome"] $ws3
@@ -350,6 +351,7 @@ for_window [class=Google-chrome] focus
 for_window [class="jetbrains-pycharm"] focus
 for_window [class="jetbrains-datagrip"] focus
 for_window [class=Emacs] focus
+for_window [class=Code] focus
 for_window [class=Thunderbird] focus
 for_window [class=Slack] focus
 for_window [class=TelegramDesktop] focus
