@@ -61,5 +61,6 @@
             ]
         }
     ],
-    "http.proxy": "http://localhost:7890"
+    "http.proxy": "http://localhost:7890",
+    "github.copilot.editor.enableAutoCompletions": true
 }
