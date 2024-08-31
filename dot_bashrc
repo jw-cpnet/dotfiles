@@ -18,6 +18,7 @@ alias emacs='ec'
 alias vim='ec'
 alias vi='emacsclient -t -a ""'
 alias scp='rsync -aHAxvs --numeric-ids -P -e "ssh -T -c aes256-gcm@openssh.com -o Compression=no -x"'
+alias cat='bat --style header --style snip --style changes --style header'
 
 PS1='[\u@\h \W]\$ '
 
