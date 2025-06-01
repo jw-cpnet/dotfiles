@@ -32,7 +32,7 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(csv
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
@@ -47,6 +47,7 @@ This function should only modify configuration layer settings."
      emacs-lisp
      (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
      (git :variables git-enable-magit-todos-plugin t)
+     html
      ivy
      javascript
      ;; lsp
@@ -55,7 +56,7 @@ This function should only modify configuration layer settings."
      (org :variables
           ;; org-enable-github-support t
           ;; org-enable-org-journal-support t
-          org-enable-jira-support t
+          org-enable-jira-support nil
           org-enable-roam-support t
           org-enable-roam-ui t
           org-enable-roam-protocol t
@@ -79,6 +80,7 @@ This function should only modify configuration layer settings."
      ;; Private layers
      ;; --------------
      ;; chezmoi
+     jira
      (org-conf :variables org-conf-enable-jira-issues-in-org-agenda nil)
      )
    ;; List of additional packages that will be installed without being wrapped
@@ -90,12 +92,7 @@ This function should only modify configuration layer settings."
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages
-   '((copilot :location (recipe :fetcher github
-                                :repo "copilot-emacs/copilot.el"
-                                :files ("*.el" "dist")))
-     (git-commit-jira-prefix :location (recipe :fetcher github
-                                               :repo "chrisbarrett/git-commit-jira-prefix"
-                                               :files ("*.el")))
+   '(
      pacdiff)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -602,6 +599,9 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+
+
+
   )
 
 
@@ -625,32 +625,12 @@ before packages are loaded."
   (spacemacs//init-spacemacs-env)
   (load-env-vars spacemacs-env-vars-file)
 
-  ;; --------------
-  ;; Github Copilot
-  ;; --------------
+  (setq counsel-rg-base-command
+        '("rg" "-uu" "--max-columns" "240" "--with-filename" "--no-heading" "--line-number" "--color" "never" "%s"))
 
-  ;; accept completion from copilot and fallback to company
 
-  (with-eval-after-load 'company
-    ;; disable inline previews
-    (delq 'company-preview-if-just-one-frontend company-frontends))
 
-  (with-eval-after-load 'copilot
-    (setq copilot-indent-offset-warning-disable t)
-    (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-    (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
-    (define-key copilot-completion-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
-    (define-key copilot-completion-map (kbd "C-<tab>") 'copilot-accept-completion-by-word))
 
-  (add-hook 'prog-mode-hook 'copilot-mode)
-
-  ;; ----------------------
-  ;; git-commit-jira-prefix
-  ;; ----------------------
-  (autoload 'git-commit-jira-prefix-init "git-commit-jira-prefix")
-
-  (with-eval-after-load 'git-commit
-    (git-commit-jira-prefix-init))
 
   ;; -------
   ;; paradox
@@ -669,13 +649,6 @@ before packages are loaded."
   ;;       )
 
 
-  ;; ----
-  ;; Jira
-  ;; ----
-  (setq jiralib-token (cons "Cookie" (getenv "JIRA_TOKEN"))
-        jiralib-url (getenv "JIRA_URL")
-        org-jira-done-states '("Closed" "Resolved" "Done" "Abandoned")
-        org-jira-working-dir "~/.spacemacs.d/jira")
 
   ;; ------------
   ;; Shell / Term
@@ -715,7 +688,57 @@ This function is called at the very end of Spacemacs initialization."
    ;; If there is more than one, they won't work right.
    '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
    '(package-selected-packages
-     '(pacdiff blacken code-cells company-anaconda anaconda-mode cython-mode importmagic epc ctable concurrent deferred live-py-mode nose pip-requirements pipenv load-env-vars pippel poetry py-isort pydoc pyenv-mode pythonic pylookup pytest pyvenv sphinx-doc yapfify magit-todos toml-mode docker tablist aio dockerfile-mode js-doc js2-refactor multiple-cursors json-mode json-navigator hierarchy json-reformat json-snatcher livid-mode nodejs-repl npm-mode prettier-js skewer-mode js2-mode web-beautify flyspell-correct-ivy flyspell-correct ace-pinyin find-by-pinyin-dired pinyinlib org-autolist rime org-jira org-journal org-roam-ui websocket org-roam ox-gfm ox-jira chezmoi evil-org gnuplot htmlize org-cliplink org-contrib org-download org-mime org-pomodoro alert log4e gntp org-present org-projectile org-project-capture org-category-capture org-rich-yank orgit-forge orgit sql-indent ejc-sql clomacs simple-httpd cider sesman parseedn clojure-mode parseclj git-commit-jira-prefix copilot yaml-mode company-shell fish-mode flycheck-bashate insert-shebang shfmt reformatter srefactor stickyfunc-enhance yasnippet-snippets xterm-color ws-butler writeroom-mode winum which-key wgrep volatile-highlights vim-powerline vi-tilde-fringe uuidgen unfill undo-tree treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toc-org terminal-here term-cursor symon symbol-overlay string-inflection string-edit-at-point spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smex smeargle shell-pop restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless mwim multi-vterm multi-term multi-line markdown-toc macrostep lorem-ipsum link-hint ivy-yasnippet ivy-xref ivy-purpose ivy-hydra ivy-avy inspector info+ indent-guide hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt helm-make google-translate golden-ratio gitignore-templates git-timemachine git-modes git-messenger git-link gh-md forge flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-snipe evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emr elisp-slime-nav elisp-def editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish diff-hl devdocs define-word counsel-projectile company column-enforce-mode clean-aindent-mode centered-cursor-mode browse-at-remote auto-yasnippet auto-highlight-symbol auto-compile async all-the-icons aggressive-indent ace-link))
+     '(ace-link ace-pinyin add-node-modules-path aggressive-indent aio alert
+                all-the-icons anaconda-mode async auto-compile
+                auto-highlight-symbol auto-yasnippet blacken browse-at-remote
+                centered-cursor-mode chezmoi cider clean-aindent-mode clojure-mode
+                clomacs code-cells column-enforce-mode company company-anaconda
+                company-shell company-web concurrent copilot counsel-css
+                counsel-projectile csv-mode ctable cython-mode deferred
+                define-word devdocs diff-hl diminish dired-quick-sort docker
+                dockerfile-mode dotenv-mode drag-stuff dumb-jump editorconfig
+                ejc-sql elisp-def elisp-slime-nav emmet-mode emr epc esh-help
+                eshell-prompt-extras eshell-z eval-sexp-fu evil-anzu evil-args
+                evil-cleverparens evil-collection evil-easymotion evil-escape
+                evil-evilified-state evil-exchange evil-goggles evil-iedit-state
+                evil-indent-plus evil-lion evil-lisp-state evil-matchit evil-mc
+                evil-nerd-commenter evil-numbers evil-org evil-snipe evil-surround
+                evil-textobj-line evil-tutor evil-unimpaired evil-visual-mark-mode
+                evil-visualstar expand-region eyebrowse fancy-battery
+                find-by-pinyin-dired fish-mode flx-ido flycheck-bashate
+                flycheck-elsa flycheck-package flyspell-correct
+                flyspell-correct-ivy forge gh-md git-commit-jira-prefix git-link
+                git-messenger git-modes git-timemachine gitignore-templates gntp
+                gnuplot golden-ratio google-translate haml-mode helm helm-core
+                helm-css-scss helm-make hide-comnt hierarchy highlight-indentation
+                highlight-numbers highlight-parentheses hl-todo holy-mode htmlize
+                hungry-delete hybrid-mode impatient-mode importmagic indent-guide
+                info+ insert-shebang inspector ivy-avy ivy-hydra ivy-purpose
+                ivy-xref ivy-yasnippet js-doc js2-mode js2-refactor json-mode
+                json-navigator json-reformat json-snatcher link-hint live-py-mode
+                livid-mode load-env-vars log4e lorem-ipsum macrostep magit-todos
+                markdown-toc multi-line multi-term multi-vterm multiple-cursors
+                mwim nameless nodejs-repl nose npm-mode open-junk-file
+                org-autolist org-category-capture org-cliplink org-contrib
+                org-download org-jira org-journal org-mime org-pomodoro
+                org-present org-project-capture org-projectile org-rich-yank
+                org-roam org-roam-ui org-superstar orgit orgit-forge overseer
+                ox-gfm ox-jira pacdiff paradox parseclj parseedn
+                password-generator pcre2el pinyinlib pip-requirements pipenv
+                pippel poetry popwin prettier-js pug-mode py-isort pydoc
+                pyenv-mode pylookup pytest pythonic pyvenv quickrun
+                rainbow-delimiters reformatter request restart-emacs rime
+                sass-mode scss-mode sesman shell-pop shfmt simple-httpd
+                skewer-mode slim-mode smeargle smex space-doc spaceline
+                spacemacs-purpose-popwin spacemacs-whitespace-cleanup sphinx-doc
+                sql-indent srefactor stickyfunc-enhance string-edit-at-point
+                string-inflection symbol-overlay symon tablist tagedit term-cursor
+                terminal-here toc-org toml-mode treemacs-evil treemacs-icons-dired
+                treemacs-magit treemacs-persp treemacs-projectile undo-tree unfill
+                uuidgen vi-tilde-fringe vim-powerline volatile-highlights
+                web-beautify web-completion-data web-mode websocket wfnames wgrep
+                which-key winum writeroom-mode ws-butler xterm-color yaml-mode
+                yapfify yasnippet-snippets))
    '(paradox-automatically-star nil)
    '(paradox-github-token t t))
   (custom-set-faces
