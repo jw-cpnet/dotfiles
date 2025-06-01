@@ -637,6 +637,122 @@ before packages are loaded."
   ;; -------
   (setq paradox-github-token (getenv "PARADOX_GITHUB_TOKEN"))
 
+  ;; ----
+  ;; Jira
+  ;; ----
+  ;; Customize Jira table column widths for better alignment
+  (with-eval-after-load 'jira-utils
+    (setq jira-issues-fields
+          '((:key . ((:path . (key))
+                     (:columns . 12)  ; Increased from 10
+                     (:name . "Key")
+                     (:formatter . jira-fmt-issue-key)))
+            (:priority-name . ((:path . (fields priority name))
+                               (:columns . 10)
+                               (:name . "Priority")))
+            (:priority-icon.  ((:path . (fields priority iconUrl))
+                               (:columns . 10)
+                               (:name . "Priority")))
+            (:labels . ((:path . (fields labels))
+                        (:columns . 15)  ; Increased from 10
+                        (:name . "Labels")))
+            (:original-estimate . ((:path . (fields aggregatetimeoriginalestimate))
+                                   (:columns . 12)  ; Increased from 10
+                                   (:name . "Estimate")
+                                   (:formatter . jira-fmt-time-from-secs)))
+            (:work-ratio . ((:path . (fields workratio))
+                            (:columns . 8)   ; Increased from 6
+                            (:name . "WR")
+                            (:formatter . jira-fmt-issue-progress)))
+            (:remaining-time . ((:path . (fields timeestimate))
+                                (:columns . 12)  ; Increased from 10
+                                (:name . "Remaining")
+                                (:formatter . jira-fmt-time-from-secs)))
+            (:assignee-name . ((:path . (fields assignee displayName))
+                               (:columns . 18)  ; Increased from 14
+                               (:name . "Assignee")))
+            (:reporter-name . ((:path . (fields reporter displayName))
+                               (:columns . 18)  ; Increased from 14
+                               (:name . "Reporter")))
+            (:components . ((:path . (fields components))
+                            (:columns . 15)  ; Increased from 10
+                            (:name . "Components")
+                            (:formatter . jira-fmt-issue-components)))
+            (:fix-versions . ((:path . (fields fixVersions))
+                              (:columns . 15)  ; Increased from 10
+                              (:name . "Fix Versions")
+                              (:formatter . jira-fmt-issue-fix-versions)))
+            (:status-name . ((:path . (fields status))
+                             (:columns . 18)  ; Increased from 15
+                             (:name . "Status")
+                             (:formatter . jira-fmt-issue-status)))
+            (:status-category-name . ((:path . (fields status statusCategory name))
+                                      (:columns . 15)  ; Increased from 10
+                                      (:name . "Status Category")))
+            (:creator-name . ((:path (fields creator  displayName))
+                              (:columns . 15)  ; Increased from 10
+                              (:name . "Creator")))
+            (:progress-percent . ((:path . (fields progress  percent))
+                                  (:columns . 12)  ; Increased from 10
+                                  (:name . "Progress")
+                                  (:formatter . jira-fmt-issue-progress)))
+            (:issue-type-name . ((:path . (fields issuetype name))
+                                 (:columns . 22)  ; Increased from 15
+                                 (:name . "Type")
+                                 (:formatter . jira-fmt-issue-type-name)))
+            (:issue-type-icon . ((:path . (fields issuetype iconUrl))
+                                 (:columns .  12)  ; Increased from 10
+                                 (:name . "Type")))
+            (:project-key . ((:path . (fields project key))
+                             (:columns . 12)  ; Increased from 10
+                             (:name . "Project")))
+            (:project-name .  ((:path . (fields project name))
+                               (:columns . 15)  ; Increased from 10
+                               (:name . "Project")))
+            (:parent-type-name . ((:path . (fields parent fields issuetype name))
+                                  (:columns . 15)  ; Increased from 10
+                                  (:name . "Parent Type")
+                                  (:formatter . jira-fmt-issue-type-name)))
+            (:parent-status . ((:path . (fields parent fields status))
+                               (:columns . 15)  ; Increased from 10
+                               (:name . "Parent Status")
+                               (:formatter . jira-fmt-issue-status)))
+            (:parent-key . ((:path . (fields parent key))
+                            (:columns . 12)  ; Increased from 10
+                            (:name . "Parent Key")
+                            (:formatter . jira-fmt-issue-key)))
+            (:created . ((:path . (fields created))
+                         (:columns . 12)  ; Increased from 10
+                         (:name . "Created")))
+            (:updated . ((:path . (fields updated))
+                         (:columns . 12)  ; Increased from 10
+                         (:name . "Updated")))
+            (:description . ((:path . (fields description))
+                             (:columns . 20)  ; Increased from 10
+                             (:name . "Description")))
+            (:summary . ((:path . (fields summary))
+                         (:columns . 50)  ; Significantly increased from 10
+                         (:name . "Summary")))
+            (:due-date . ((:path . (fields duedate))
+                          (:columns . 12)  ; Increased from 10
+                          (:name . "Due Date")
+                          (:formatter . jira-fmt-date)))
+            (:sprints . ((:path . (fields (custom "Sprint")))
+                         (:columns . 15)  ; Increased from 10
+                         (:name . "Sprints")
+                         (:formatter . jira-fmt-issue-sprints)))
+            (:line . ((:path . (fields (custom "Business line")))
+                      (:columns . 15)  ; Increased from 10
+                      (:name . "Business Line")
+                      (:formatter . jira-fmt-business-line)))
+            (:cost-center . ((:path . (fields (custom "Cost center")))
+                             (:columns . 15)  ; Increased from 10
+                             (:name . "Const Center")
+                             (:formatter . jira-fmt-cost-center)))
+            (:resolution . ((:path . (fields resolution name))
+                             (:columns . 15)  ; Increased from 10
+                             (:name . "Resolution"))))))
+
   ;; -----------
   ;; org-journal
   ;; -----------
