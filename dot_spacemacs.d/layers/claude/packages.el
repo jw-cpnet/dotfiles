@@ -42,23 +42,22 @@
     :init
     (progn
       ;; Set up Spacemacs keybindings
-      (spacemacs/declare-prefix "A" "AI")
-      (spacemacs/declare-prefix "Ac" "claude")
+      (spacemacs/declare-prefix "A" "AI/Claude")
       (spacemacs/set-leader-keys
-        "Acc" 'claude-code
-        "Acd" 'claude-code-current-directory
-        "Act" 'claude-code-toggle
-        "Acb" 'claude-code-switch-to-buffer
-        "Ack" 'claude-code-kill
-        "Acs" 'claude-code-send-command
-        "Acx" 'claude-code-send-command-with-context
-        "Acr" 'claude-code-send-region
-        "Ace" 'claude-code-fix-error-at-point
-        "Ac/" 'claude-code-slash-commands
-        "Acm" 'claude-code-transient
-        "Acy" 'claude-code-send-return
-        "Acn" 'claude-code-send-escape
-        "AcR" 'claude-code-toggle-read-only-mode))
+        "Ac" 'claude-code
+        "Ad" 'claude-code-current-directory
+        "At" 'claude-code-toggle
+        "Ab" 'claude-code-switch-to-buffer
+        "Ak" 'claude-code-kill
+        "As" 'claude-code-send-command
+        "Ax" 'claude-code-send-command-with-context
+        "Ar" 'claude-code-send-region
+        "Ae" 'claude-code-fix-error-at-point
+        "A/" 'claude-code-slash-commands
+        "Am" 'claude-code-transient
+        "Ay" 'claude-code-send-return
+        "An" 'claude-code-send-escape
+        "AR" 'claude-code-toggle-read-only-mode))
     :config
     (progn
       ;; Enable claude-code-mode globally
