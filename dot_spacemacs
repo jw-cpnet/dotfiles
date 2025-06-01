@@ -80,6 +80,7 @@ This function should only modify configuration layer settings."
      ;; Private layers
      ;; --------------
      ;; chezmoi
+     claude
      jira
      (org-conf :variables org-conf-enable-jira-issues-in-org-agenda nil)
      )
