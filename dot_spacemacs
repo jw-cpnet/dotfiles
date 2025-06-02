@@ -32,7 +32,8 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(csv
+   '(lua
+     csv
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
@@ -751,8 +752,8 @@ before packages are loaded."
                              (:name . "Const Center")
                              (:formatter . jira-fmt-cost-center)))
             (:resolution . ((:path . (fields resolution name))
-                             (:columns . 15)  ; Increased from 10
-                             (:name . "Resolution"))))))
+                            (:columns . 15)  ; Increased from 10
+                            (:name . "Resolution"))))))
 
   ;; -----------
   ;; org-journal
@@ -810,37 +811,38 @@ This function is called at the very end of Spacemacs initialization."
                 auto-highlight-symbol auto-yasnippet blacken browse-at-remote
                 centered-cursor-mode chezmoi cider clean-aindent-mode clojure-mode
                 clomacs code-cells column-enforce-mode company company-anaconda
-                company-shell company-web concurrent copilot counsel-css
-                counsel-projectile csv-mode ctable cython-mode deferred
-                define-word devdocs diff-hl diminish dired-quick-sort docker
-                dockerfile-mode dotenv-mode drag-stuff dumb-jump editorconfig
-                ejc-sql elisp-def elisp-slime-nav emmet-mode emr epc esh-help
-                eshell-prompt-extras eshell-z eval-sexp-fu evil-anzu evil-args
-                evil-cleverparens evil-collection evil-easymotion evil-escape
-                evil-evilified-state evil-exchange evil-goggles evil-iedit-state
-                evil-indent-plus evil-lion evil-lisp-state evil-matchit evil-mc
-                evil-nerd-commenter evil-numbers evil-org evil-snipe evil-surround
-                evil-textobj-line evil-tutor evil-unimpaired evil-visual-mark-mode
-                evil-visualstar expand-region eyebrowse fancy-battery
-                find-by-pinyin-dired fish-mode flx-ido flycheck-bashate
-                flycheck-elsa flycheck-package flyspell-correct
-                flyspell-correct-ivy forge gh-md git-commit-jira-prefix git-link
-                git-messenger git-modes git-timemachine gitignore-templates gntp
-                gnuplot golden-ratio google-translate haml-mode helm helm-core
-                helm-css-scss helm-make hide-comnt hierarchy highlight-indentation
-                highlight-numbers highlight-parentheses hl-todo holy-mode htmlize
-                hungry-delete hybrid-mode impatient-mode importmagic indent-guide
-                info+ insert-shebang inspector ivy-avy ivy-hydra ivy-purpose
-                ivy-xref ivy-yasnippet js-doc js2-mode js2-refactor json-mode
+                company-lua company-shell company-web concurrent copilot
+                counsel-css counsel-projectile csv-mode ctable cython-mode
+                deferred define-word devdocs diff-hl diminish dired-quick-sort
+                docker dockerfile-mode dotenv-mode drag-stuff dumb-jump
+                editorconfig ejc-sql elisp-def elisp-slime-nav emmet-mode emr epc
+                esh-help eshell-prompt-extras eshell-z eval-sexp-fu evil-anzu
+                evil-args evil-cleverparens evil-collection evil-easymotion
+                evil-escape evil-evilified-state evil-exchange evil-goggles
+                evil-iedit-state evil-indent-plus evil-lion evil-lisp-state
+                evil-matchit evil-mc evil-nerd-commenter evil-numbers evil-org
+                evil-snipe evil-surround evil-textobj-line evil-tutor
+                evil-unimpaired evil-visual-mark-mode evil-visualstar
+                expand-region eyebrowse fancy-battery find-by-pinyin-dired
+                fish-mode flx-ido flycheck-bashate flycheck-elsa flycheck-package
+                flyspell-correct flyspell-correct-ivy forge ggtags gh-md
+                git-commit-jira-prefix git-link git-messenger git-modes
+                git-timemachine gitignore-templates gntp gnuplot golden-ratio
+                google-translate haml-mode helm helm-core helm-css-scss helm-make
+                hide-comnt hierarchy highlight-indentation highlight-numbers
+                highlight-parentheses hl-todo holy-mode htmlize hungry-delete
+                hybrid-mode impatient-mode importmagic indent-guide info+
+                insert-shebang inspector ivy-avy ivy-hydra ivy-purpose ivy-xref
+                ivy-yasnippet js-doc js2-mode js2-refactor json-mode
                 json-navigator json-reformat json-snatcher link-hint live-py-mode
-                livid-mode load-env-vars log4e lorem-ipsum macrostep magit-todos
-                markdown-toc multi-line multi-term multi-vterm multiple-cursors
-                mwim nameless nodejs-repl nose npm-mode open-junk-file
-                org-autolist org-category-capture org-cliplink org-contrib
-                org-download org-jira org-journal org-mime org-pomodoro
-                org-present org-project-capture org-projectile org-rich-yank
-                org-roam org-roam-ui org-superstar orgit orgit-forge overseer
-                ox-gfm ox-jira pacdiff paradox parseclj parseedn
+                livid-mode load-env-vars log4e lorem-ipsum lua-mode macrostep
+                magit-todos markdown-toc multi-line multi-term multi-vterm
+                multiple-cursors mwim nameless nodejs-repl nose npm-mode
+                open-junk-file org-autolist org-category-capture org-cliplink
+                org-contrib org-download org-jira org-journal org-mime
+                org-pomodoro org-present org-project-capture org-projectile
+                org-rich-yank org-roam org-roam-ui org-superstar orgit orgit-forge
+                overseer ox-gfm ox-jira pacdiff paradox parseclj parseedn
                 password-generator pcre2el pinyinlib pip-requirements pipenv
                 pippel poetry popwin prettier-js pug-mode py-isort pydoc
                 pyenv-mode pylookup pytest pythonic pyvenv quickrun
