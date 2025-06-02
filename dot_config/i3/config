@@ -172,7 +172,8 @@ bindcode $mod+Shift+90 	 move container to workspace  $ws10
 ######################################
 
 # start a terminal
-bindsym $mod+Return exec --no-startup-id xfce4-terminal
+# bindsym $mod+Return exec --no-startup-id xfce4-terminal
+bindsym $mod+Return exec --no-startup-id wezterm
 
 # kill focused window
 bindsym $mod+q kill
@@ -333,6 +334,7 @@ workspace $ws6 output eDP-1
 
 # bind program to workspace and focus to them on startup:
 assign [class="Xfce4-terminal"] $ws1
+assign [class="org.wezfurlong.wezterm"] $ws1
 assign [class="Emacs"] $ws2
 assign [class="Code"] $ws2
 assign [class="Cursor"] $ws2
@@ -348,6 +350,7 @@ assign [class="Gstm"] $ws10
 
 # automatic set focus new window if it opens on another workspace than the current:
 for_window [class=Xfce4-terminal] focus
+for_window [class=org.wezfurlong.wezterm] focus
 for_window [class=Google-chrome] focus
 for_window [class="jetbrains-pycharm"] focus
 for_window [class="jetbrains-datagrip"] focus
