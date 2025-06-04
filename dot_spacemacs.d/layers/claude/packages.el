@@ -73,6 +73,20 @@
       ;; Set up hooks
       (add-hook 'claude-code-start-hook
                 (lambda ()
-                  (message "Claude Code session started"))))))
+                  (message "Claude Code session started")))
+
+      ;; Set Claude EAT buffers to use Emacs state by default
+      (add-hook 'eat-mode-hook
+                (lambda ()
+                  (when (string-match "\\*claude\\*" (buffer-name))
+                    (evil-emacs-state))))
+
+      ;; Also ensure switching to Claude buffer activates emacs state
+      (add-hook 'buffer-list-update-hook
+                (lambda ()
+                  (when (and (string-match "\\*claude\\*" (buffer-name))
+                             (eq major-mode 'eat-mode)
+                             (not (eq evil-state 'emacs)))
+                    (evil-emacs-state)))))))
 
 ;;; packages.el ends here
