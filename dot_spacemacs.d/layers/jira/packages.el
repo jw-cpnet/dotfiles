@@ -49,18 +49,7 @@
 (defun jira/init-jira ()
   "Initialize jira package."
   (use-package jira
-    :defer t
-    :init
-    (progn
-      ;; Set JIRA configuration from environment variables
-      (setq jira-base-url (getenv "JIRA_URL")) ;; Jira instance URL
-      (setq jira-username "jian.wang@cpnet.io") ;; Jira username (usually, an email)
-      ;; API token for Jira
-      ;; See https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/
-      (setq jira-token (getenv "JIRA_API_TOKEN"))
-      (setq jira-token-is-personal-access-token nil)
-      ;; (setq jira-api-version 3) ;; Version 2 is also allowed
-      )))
+    :defer t))
 
 (defun jira/post-init-jira ()
   "Post-initialize jira package."
