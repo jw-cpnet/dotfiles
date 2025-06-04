@@ -32,9 +32,7 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(lua
-     csv
-     ;; ----------------------------------------------------------------
+   '(;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
@@ -45,10 +43,13 @@ This function should only modify configuration layer settings."
               chinese-enable-fcitx t)
      deft
      docker
+     csv
      emacs-lisp
      (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
      (git :variables git-enable-magit-todos-plugin t)
+     github-copilot
      html
+     lua
      ivy
      javascript
      ;; lsp
