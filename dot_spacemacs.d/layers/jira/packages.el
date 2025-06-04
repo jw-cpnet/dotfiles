@@ -49,7 +49,9 @@
 (defun jira/init-jira ()
   "Initialize jira package."
   (use-package jira
-    :defer t))
+    :defer t
+    :init
+    (spacemacs/set-leader-keys "aj" 'jira-issues)))
 
 (defun jira/post-init-jira ()
   "Post-initialize jira package."
