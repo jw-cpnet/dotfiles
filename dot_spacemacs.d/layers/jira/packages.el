@@ -64,7 +64,7 @@
 
 (defun jira/post-init-jira ()
   "Post-initialize jira package."
-  
+
   ;; Set up keybindings for jira-issues-mode
   (add-hook 'jira-issues-mode-hook
             (lambda ()
@@ -75,4 +75,4 @@
                   (kbd "l") 'jira-issues-menu
                   (kbd "?") 'jira-issues-actions-menu)))))
 
-;;; packages.el ends here 
+;;; packages.el ends here
