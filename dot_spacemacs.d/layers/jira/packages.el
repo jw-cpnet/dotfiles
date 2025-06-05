@@ -41,10 +41,10 @@
   (use-package git-commit-jira-prefix
     :defer t
     :init
-    (autoload 'git-commit-jira-prefix-init "git-commit-jira-prefix")
-    :config
-    (with-eval-after-load 'git-commit
-      (git-commit-jira-prefix-init))))
+    (progn
+      (autoload 'git-commit-jira-prefix-init "git-commit-jira-prefix")
+      (with-eval-after-load 'git-commit
+        (git-commit-jira-prefix-init)))))
 
 (defun jira/init-jira ()
   "Initialize jira package."
