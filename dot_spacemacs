@@ -635,6 +635,9 @@ before packages are loaded."
 
 
 
+  ;; Configure winum to use frame-local window numbering
+  (setq winum-scope 'frame-local)
+
   ;; -------
   ;; paradox
   ;; -------
