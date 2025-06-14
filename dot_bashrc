@@ -27,6 +27,9 @@ export https_proxy=http://localhost:7890
 export HTTP_PROXY=$http_proxy
 export HTTPS_PROXY=$https_proxy
 
+# Source API keys if the file exists
+[[ -f ~/.api_keys ]] && source ~/.api_keys
+
 # Start ssh-agent and add keys
 if ! pgrep -u "$USER" ssh-agent >/dev/null; then
 	ssh-agent >~/.ssh-agent-thing
