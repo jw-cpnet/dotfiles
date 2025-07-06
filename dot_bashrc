@@ -31,12 +31,23 @@ export HTTPS_PROXY=$https_proxy
 [[ -f ~/.api_keys ]] && source ~/.api_keys
 
 # Start ssh-agent and add keys
+# Check if ssh-agent is running
 if ! pgrep -u "$USER" ssh-agent >/dev/null; then
 	ssh-agent >~/.ssh-agent-thing
 fi
-if [[ ! "$SSH_AUTH_SOCK" ]]; then
+
+# Always source our ssh-agent (override Wezterm's broken socket)
+if [[ -f ~/.ssh-agent-thing ]]; then
 	eval "$(<~/.ssh-agent-thing)" >/dev/null
 fi
+
+# Verify the socket actually works, if not start a new agent
+if ! ssh-add -l &>/dev/null; then
+	ssh-agent >~/.ssh-agent-thing
+	eval "$(<~/.ssh-agent-thing)" >/dev/null
+fi
+
+# Add all SSH keys
 ssh-add ~/.ssh/id_* &>/dev/null
 
 # Initialize fasd
@@ -51,3 +62,8 @@ PATH="$HOME/.local/bin:$HOME/.deno/bin:$PATH"
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 eval "$(atuin init bash)"
+
+
+
+
+alias claude="/home/jw-cpnet/.claude/local/claude"
