@@ -67,3 +67,6 @@ eval "$(atuin init bash)"
 
 
 alias claude="/home/jw-cpnet/.claude/local/claude"
+
+
+export MAX_MCP_OUTPUT_TOKENS=50000
