@@ -1,0 +1,74 @@
+#!/bin/bash
+# Manual display control for Z13 - Omarchy style
+
+MONITOR_CONFIG="$HOME/.config/hypr/monitors.conf"
+SERVICE_NAME="z13-display-power.service"
+
+case "$1" in
+    60|battery|save)
+        echo "Setting 60Hz (Battery Saver)..."
+        systemctl --user stop $SERVICE_NAME 2>/dev/null
+        cat > "$MONITOR_CONFIG" << 'EOF'
+# Manually set to 60Hz
+env = GDK_SCALE,2
+monitor=eDP-1,2560x1600@60,0x0,2
+EOF
+        hyprctl reload
+        notify-send "Display" "60Hz (Manual)" -i display
+        ;;
+
+    120|balanced)
+        echo "Setting 120Hz (Balanced)..."
+        systemctl --user stop $SERVICE_NAME 2>/dev/null
+        cat > "$MONITOR_CONFIG" << 'EOF'
+# Manually set to 120Hz
+env = GDK_SCALE,2
+monitor=eDP-1,2560x1600@120,0x0,2
+EOF
+        hyprctl reload
+        notify-send "Display" "120Hz (Manual)" -i display
+        ;;
+
+    180|performance|game)
+        echo "Setting 180Hz (Performance)..."
+        systemctl --user stop $SERVICE_NAME 2>/dev/null
+        cat > "$MONITOR_CONFIG" << 'EOF'
+# Manually set to 180Hz
+env = GDK_SCALE,2
+monitor=eDP-1,2560x1600@180,0x0,2
+EOF
+        hyprctl reload
+        notify-send "Display" "180Hz (Manual)" -i display
+        ;;
+
+    auto)
+        echo "Enabling automatic mode..."
+        systemctl --user start $SERVICE_NAME
+        systemctl --user enable $SERVICE_NAME
+        notify-send "Display" "Auto refresh rate enabled" -i display
+        ;;
+
+    status)
+        current=$(hyprctl monitors | grep -oP '\d+x\d+@\d+' | head -1)
+        echo "Current: $current"
+        if systemctl --user is-active $SERVICE_NAME > /dev/null 2>&1; then
+            echo "Mode: Automatic"
+        else
+            echo "Mode: Manual"
+        fi
+        ;;
+
+    *)
+        echo "Z13 Display Refresh Rate Control"
+        echo ""
+        echo "Usage: z13-display [option]"
+        echo ""
+        echo "Options:"
+        echo "  60, battery, save  - 60Hz for battery saving"
+        echo "  120, balanced      - 120Hz balanced mode"
+        echo "  180, game          - 180Hz for gaming"
+        echo "  auto               - Automatic based on power"
+        echo "  status             - Show current status"
+        exit 1
+        ;;
+esac

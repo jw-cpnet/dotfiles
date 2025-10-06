@@ -1,0 +1,63 @@
+#!/bin/bash
+# Z13 Display Power Monitor - Omarchy Compatible
+# Automatically switches display refresh rate based on power state
+
+MONITOR_CONFIG="$HOME/.config/hypr/monitors.conf"
+POWER_STATE_FILE="/sys/class/power_supply/AC*/online"
+LAST_STATE_FILE="/tmp/z13-display-power-state"
+
+# Initialize
+mkdir -p "$(dirname "$LAST_STATE_FILE")"
+touch "$LAST_STATE_FILE"
+
+log_message() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | systemd-cat -t z13-display-power
+}
+
+update_monitor_config() {
+    local refresh_rate=$1
+    cat > "$MONITOR_CONFIG" << EOF
+# Auto-managed by z13-display-power-monitor
+# Z13 Display: $refresh_rate Hz mode
+env = GDK_SCALE,2
+monitor=eDP-1,2560x1600@${refresh_rate},0x0,2
+EOF
+    hyprctl reload > /dev/null 2>&1
+}
+
+check_power_state() {
+    # Check if AC is connected (1) or not (0)
+    local ac_online=$(cat $POWER_STATE_FILE 2>/dev/null | head -1)
+    echo "${ac_online:-0}"
+}
+
+main_loop() {
+    log_message "Z13 Display Power Monitor started"
+
+    while true; do
+        current_state=$(check_power_state)
+        last_state=$(cat "$LAST_STATE_FILE" 2>/dev/null)
+
+        if [ "$current_state" != "$last_state" ]; then
+            if [ "$current_state" = "1" ]; then
+                # AC connected - switch to 180Hz
+                log_message "AC connected - switching to 180Hz"
+                update_monitor_config 180
+                notify-send "Display" "Switched to 180Hz (AC Power)" -i display
+            else
+                # Battery - switch to 60Hz
+                log_message "On battery - switching to 60Hz"
+                update_monitor_config 60
+                notify-send "Display" "Switched to 60Hz (Battery Saver)" -i battery
+            fi
+            echo "$current_state" > "$LAST_STATE_FILE"
+        fi
+
+        sleep 5
+    done
+}
+
+# Handle signals gracefully
+trap "log_message 'Z13 Display Power Monitor stopped'; exit 0" SIGTERM SIGINT
+
+main_loop

@@ -1,0 +1,33 @@
+#!/bin/bash
+# Safe CopyQ startup - waits for waybar
+
+LOG_FILE="/tmp/copyq-safe-start.log"
+echo "[$(date)] Starting copyq-safe-start script" > "$LOG_FILE"
+
+# Initial delay to let Hyprland settle
+sleep 5
+
+# Wait for waybar to be running
+max_wait=30
+count=0
+while ! pgrep -x waybar > /dev/null; do
+    sleep 1
+    count=$((count + 1))
+    echo "[$(date)] Waiting for waybar... attempt $count" >> "$LOG_FILE"
+    if [ $count -ge $max_wait ]; then
+        echo "[$(date)] Waybar not found after ${max_wait}s, starting CopyQ anyway" >> "$LOG_FILE"
+        break
+    fi
+done
+
+# Additional delay to ensure waybar is fully initialized
+sleep 1
+
+# Start CopyQ if not already running
+if ! pgrep -x copyq > /dev/null; then
+    echo "[$(date)] Starting CopyQ server" >> "$LOG_FILE"
+    /usr/bin/copyq --start-server &
+    echo "[$(date)] CopyQ started with PID $!" >> "$LOG_FILE"
+else
+    echo "[$(date)] CopyQ already running" >> "$LOG_FILE"
+fi

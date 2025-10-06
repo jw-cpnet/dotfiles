@@ -1,0 +1,12 @@
+[Unit]
+Description=Z13 Display Refresh Rate Power Management
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/home/jian/.local/bin/z13-display-power-monitor
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=default.target
