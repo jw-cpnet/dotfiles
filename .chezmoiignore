@@ -1,2 +1,6 @@
 # Files to ignore when applying chezmoi
 CLAUDE.md
+
+# Ignore i3 and dunst configs (using Hyprland instead)
+.config/dunst
+.config/i3
