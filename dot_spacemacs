@@ -74,7 +74,9 @@ This function should only modify configuration layer settings."
      toml
      treemacs
      version-control
-     (xclipboard :variables xclipboard-enable-cliphist nil)
+     (xclipboard :variables xclipboard-enable-cliphist nil
+                 xclipboard-copy-command "wl-copy"
+                 xclipboard-paste-command "wl-paste")
      yaml
      ;; --------------
      ;; Private layers
@@ -855,10 +857,10 @@ This function is called at the very end of Spacemacs initialization."
                 treemacs-magit treemacs-persp treemacs-projectile undo-tree unfill
                 uuidgen vi-tilde-fringe vim-powerline volatile-highlights
                 web-beautify web-completion-data web-mode websocket wfnames wgrep
-                which-key winum writeroom-mode ws-butler xterm-color yaml-mode
-                yapfify yasnippet-snippets))
+                which-key winum writeroom-mode ws-butler xclip xterm-color
+                yaml-mode yapfify yasnippet-snippets))
    '(paradox-automatically-star nil)
-   '(paradox-github-token t t))
+   '(paradox-github-token t))
   (custom-set-faces
    ;; custom-set-faces was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
