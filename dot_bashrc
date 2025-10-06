@@ -1,0 +1,26 @@
+# All the default Omarchy aliases and functions
+# (don't mess with these directly, just overwrite them here!)
+source ~/.local/share/omarchy/default/bash/rc
+
+# Add your own exports, aliases, and functions here.
+#
+# Make an alias for invoking commands you use constantly
+# alias p='python'
+
+# SSH Agent auto-start
+if [ -z "$SSH_AUTH_SOCK" ]; then
+    eval "$(ssh-agent -s)" > /dev/null
+    ssh-add ~/.ssh/id_github 2>/dev/null
+    ssh-add ~/.ssh/id_ed25519 2>/dev/null
+fi
+
+# Z13 Power Management aliases
+alias pq='asusctl profile -p Quiet'
+alias pb='asusctl profile -p Balanced'
+alias pp='asusctl profile -p Performance'
+alias battery='cat /sys/class/power_supply/BAT0/capacity'
+
+# Source API keys if the file exists
+[[ -f ~/.api_keys ]] && source ~/.api_keys
+
+. "$HOME/.local/share/../bin/env"
