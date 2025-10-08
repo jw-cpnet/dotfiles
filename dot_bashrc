@@ -24,3 +24,9 @@ alias battery='cat /sys/class/power_supply/BAT0/capacity'
 [[ -f ~/.api_keys ]] && source ~/.api_keys
 
 . "$HOME/.local/share/../bin/env"
+export PATH=$PATH:/opt/rocm/bin
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/jian/.lmstudio/bin"
+# End of LM Studio CLI section
+
