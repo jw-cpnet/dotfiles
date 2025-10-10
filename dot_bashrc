@@ -7,18 +7,14 @@ source ~/.local/share/omarchy/default/bash/rc
 # Make an alias for invoking commands you use constantly
 # alias p='python'
 
-# SSH Agent auto-start
+# SSH Agent auto-start - add all keys
 if [ -z "$SSH_AUTH_SOCK" ]; then
     eval "$(ssh-agent -s)" > /dev/null
-    ssh-add ~/.ssh/id_github 2>/dev/null
-    ssh-add ~/.ssh/id_ed25519 2>/dev/null
+    # Add all private keys (id_* and *.pem files)
+    for key in ~/.ssh/id_* ~/.ssh/*.pem; do
+        [ -f "$key" ] && [ ! "${key%.pub}" != "$key" ] && ssh-add "$key" 2>/dev/null
+    done
 fi
-
-# Z13 Power Management aliases
-alias pq='asusctl profile -p Quiet'
-alias pb='asusctl profile -p Balanced'
-alias pp='asusctl profile -p Performance'
-alias battery='cat /sys/class/power_supply/BAT0/capacity'
 
 # Source API keys if the file exists
 [[ -f ~/.api_keys ]] && source ~/.api_keys
@@ -30,3 +26,9 @@ export PATH=$PATH:/opt/rocm/bin
 export PATH="$PATH:/home/jian/.lmstudio/bin"
 # End of LM Studio CLI section
 
+export PATH="/home/jian/.deno/bin:$PATH"
+
+# Source bash-preexec for atuin integration
+[[ -f /usr/share/bash-preexec/bash-preexec.sh ]] && source /usr/share/bash-preexec/bash-preexec.sh
+
+eval "$(atuin init bash)"
