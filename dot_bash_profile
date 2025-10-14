@@ -1,0 +1,20 @@
+#
+# ~/.bash_profile
+#
+
+# Add mise shims to PATH for non-interactive shells (e.g., Claude Code)
+export PATH="$HOME/.local/share/mise/shims:$PATH"
+
+[[ -f ~/.bashrc ]] && . ~/.bashrc
+
+. "$HOME/.local/share/../bin/env"
+
+
+# Added by Toolbox App
+export PATH="$PATH:/home/jian/.local/share/JetBrains/Toolbox/scripts"
+
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/jian/.lmstudio/bin"
+# End of LM Studio CLI section
+
