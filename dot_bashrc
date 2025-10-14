@@ -7,14 +7,8 @@ source ~/.local/share/omarchy/default/bash/rc
 # Make an alias for invoking commands you use constantly
 # alias p='python'
 
-# SSH Agent auto-start - add all keys
-if [ -z "$SSH_AUTH_SOCK" ]; then
-    eval "$(ssh-agent -s)" > /dev/null
-    # Add all private keys (id_* and *.pem files)
-    for key in ~/.ssh/id_* ~/.ssh/*.pem; do
-        [ -f "$key" ] && [ ! "${key%.pub}" != "$key" ] && ssh-add "$key" 2>/dev/null
-    done
-fi
+# Use systemd ssh-agent (managed by systemd user service)
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 # Source API keys if the file exists
 [[ -f ~/.api_keys ]] && source ~/.api_keys

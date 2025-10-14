@@ -1,0 +1,18 @@
+#!/bin/bash
+# Automatically add all SSH private keys to the systemd ssh-agent
+
+export SSH_AUTH_SOCK="/run/user/1000/ssh-agent.socket"
+
+# Wait for the socket to be ready
+for i in {1..10}; do
+    [ -S "$SSH_AUTH_SOCK" ] && break
+    sleep 0.1
+done
+
+# Find and add all private keys (excluding .pub files)
+for key in ~/.ssh/id_* ~/.ssh/*.pem; do
+    # Check if file exists and is not a public key
+    if [ -f "$key" ] && [[ "$key" != *.pub ]]; then
+        ssh-add "$key" 2>/dev/null
+    fi
+done
