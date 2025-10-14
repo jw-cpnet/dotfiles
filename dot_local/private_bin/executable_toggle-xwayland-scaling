@@ -1,0 +1,16 @@
+#!/bin/bash
+# Toggle XWayland scaling in Hyprland
+
+CONFIG="$HOME/.config/hypr/hyprland.conf"
+
+if grep -q "^xwayland {" "$CONFIG"; then
+    # Currently enabled (force_zero_scaling = true), so disable it (comment out)
+    sed -i '/^xwayland {/,/^}/s/^/# /' "$CONFIG"
+    hyprctl reload
+    notify-send "XWayland Scaling" "HiDPI Enabled (2x scaling)" -i video-display
+else
+    # Currently disabled (commented), so enable it
+    sed -i '/^# xwayland {/,/^# }/s/^# //' "$CONFIG"
+    hyprctl reload
+    notify-send "XWayland Scaling" "HiDPI Disabled (native resolution for games)" -i video-display
+fi
