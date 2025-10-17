@@ -76,7 +76,7 @@ This function should only modify configuration layer settings."
      version-control
      (xclipboard :variables xclipboard-enable-cliphist nil
                  xclipboard-copy-command "wl-copy"
-                 xclipboard-paste-command "wl-paste")
+                 xclipboard-paste-command "wl-paste -p")
      yaml
      ;; --------------
      ;; Private layers
