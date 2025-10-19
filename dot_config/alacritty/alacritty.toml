@@ -17,6 +17,8 @@ decorations = "None"
 [keyboard]
 bindings = [
   { key = "F11", action = "ToggleFullscreen" },
+{ key = "Insert", mods = "Shift", action = "Paste" },
+{ key = "Insert", mods = "Control", action = "Copy" },
 
   # Scrolling keybindings for Z13 (no touchpad scrolling)
   { key = "K", mods = "Alt", action = "ScrollLineUp" },
