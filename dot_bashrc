@@ -1,3 +1,8 @@
+# Source bash-preexec FIRST, before anything else that might detect it
+# This must come before Omarchy rc because starship (in Omarchy) will detect
+# the preexec/precmd arrays and prevent bash-preexec from loading properly
+[[ -f /usr/share/bash-preexec/bash-preexec.sh ]] && source /usr/share/bash-preexec/bash-preexec.sh
+
 # All the default Omarchy aliases and functions
 # (don't mess with these directly, just overwrite them here!)
 source ~/.local/share/omarchy/default/bash/rc
@@ -22,7 +27,66 @@ export PATH="$PATH:/home/jian/.lmstudio/bin"
 
 export PATH="/home/jian/.deno/bin:$PATH"
 
-# Source bash-preexec for atuin integration
-[[ -f /usr/share/bash-preexec/bash-preexec.sh ]] && source /usr/share/bash-preexec/bash-preexec.sh
-
+# Initialize atuin (bash-preexec is already sourced at the top of this file)
 eval "$(atuin init bash)"
+
+# Force update atuin backend detection (needed for JetBrains IDE terminals)
+# JetBrains terminals have unusual initialization order where atuin inits before
+# bash-preexec variables are fully set, causing ATUIN_PREEXEC_BACKEND to remain "none"
+[[ $(type -t __atuin_update_preexec_backend) == function ]] && __atuin_update_preexec_backend
+
+# Fix JetBrains DEBUG trap interference
+# Root cause: Something (likely JetBrains or starship) adds __bp_precmd_invoke_cmd to
+# PROMPT_COMMAND before bash-preexec's __bp_install runs. When __bp_install checks if
+# it's already installed, it sees __bp_precmd_invoke_cmd and skips installation,
+# including skipping the DEBUG trap setup. This leaves the system in a broken state
+# where the precmd function exists but the preexec trap doesn't.
+#
+# Solution: Check if __bp_install actually ran (by looking for __bp_interactive_mode
+# in PROMPT_COMMAND). If not, temporarily remove __bp_precmd_invoke_cmd from
+# PROMPT_COMMAND, force __bp_install to run, then reinstall JetBrains' trap.
+__fix_jetbrains_trap() {
+    # Check if bash-preexec's __bp_install actually ran (only needs to run once)
+    if [[ "${PROMPT_COMMAND}" != *"__bp_interactive_mode"* ]]; then
+        # __bp_install never ran! Force it to run by temporarily removing the guard
+        local saved_prompt_command="$PROMPT_COMMAND"
+        PROMPT_COMMAND="${PROMPT_COMMAND//__bp_precmd_invoke_cmd/}"
+
+        # Force bash-preexec to install properly
+        if [[ $(type -t __bp_install) == function ]]; then
+            __bp_install
+        fi
+
+        # Restore PROMPT_COMMAND order (our fix should be first)
+        PROMPT_COMMAND="__fix_jetbrains_trap;${PROMPT_COMMAND}"
+    fi
+
+    # Now handle JetBrains' trap if we're in a JetBrains terminal
+    # This runs on EVERY prompt until JetBrains initializes
+    if [[ $(type -t __jetbrains_intellij_install_debug_trap) == function ]]; then
+        # Check if JetBrains has initialized yet (it initializes on first prompt)
+        if [[ -z "${__jetbrains_intellij_initialized}" ]]; then
+            # JetBrains hasn't initialized yet, it will do so at the END of this prompt
+            # when __jetbrains_intellij_command_precmd runs. Can't fix it yet.
+            return
+        fi
+
+        # JetBrains has initialized! Now check if we've already fixed the trap
+        if [[ -z "${__jetbrains_trap_fixed}" ]]; then
+            # JetBrains' trap capture mechanism fails due to subshell context, leaving
+            # __jetbrains_intellij_original_debug_trap empty. Manually set it so
+            # JetBrains' trap chains to bash-preexec properly.
+            __jetbrains_intellij_original_debug_trap='__bp_preexec_invoke_exec "$_"'
+            __jetbrains_trap_fixed=1
+        fi
+    fi
+}
+
+# Add our fix to run before other PROMPT_COMMAND functions
+if [[ "${PROMPT_COMMAND}" != *"__fix_jetbrains_trap"* ]]; then
+    PROMPT_COMMAND="__fix_jetbrains_trap${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+fi
+
+# Quick fix aliases
+alias fix-launcher='pkill walker && walker --gapplication-service &>/dev/null &'
+alias scp='rsync -aHAxvs --numeric-ids -P -e "ssh -T -c aes256-gcm@openssh.com -o Compression=no -x"'
