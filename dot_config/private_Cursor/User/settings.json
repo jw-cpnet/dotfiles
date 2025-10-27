@@ -62,5 +62,34 @@
             ]
         }
     ],
-    "git.autofetch": true
+    "git.autofetch": true,
+    "terminal.integrated.fontSize": 10,
+    "files.autoSave": "afterDelay",
+    "emmet.includeLanguages": {
+        "javascript": "html"
+    },
+    "emmet.triggerExpansionOnTab": false,
+    "workbench.editor.showTabs": "none",
+
+    // Formatter configuration
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }
