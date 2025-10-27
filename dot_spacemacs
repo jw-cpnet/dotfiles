@@ -58,7 +58,7 @@ This function should only modify configuration layer settings."
      (javascript :variables js2-mode-show-strict-warnings nil
                  js2-mode-show-parse-errors nil
                  javascript-lsp-linter nil
-                 javascript-fmt-tool 'web-beautify
+                 javascript-fmt-tool 'prettier
                  javascript-fmt-on-save t
                  js2-basic-offset 2
                  js-indent-level 2)
