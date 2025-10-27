@@ -32,7 +32,8 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(;; ----------------------------------------------------------------
+   '(
+     ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
@@ -41,6 +42,9 @@ This function should only modify configuration layer settings."
      better-defaults
      (chinese :variables chinese-use-fcitx5 t
               chinese-enable-fcitx t)
+     (claude-code :variables
+                  claude-code-ide-window-side 'right
+                  claude-code-ide-window-width 80)
      deft
      docker
      csv
@@ -51,8 +55,14 @@ This function should only modify configuration layer settings."
      html
      lua
      ivy
-     javascript
-     ;; lsp
+     (javascript :variables js2-mode-show-strict-warnings nil
+                 js2-mode-show-parse-errors nil
+                 javascript-lsp-linter nil
+                 javascript-fmt-tool 'web-beautify
+                 javascript-fmt-on-save t
+                 js2-basic-offset 2
+                 js-indent-level 2)
+     lsp
      (org :variables
           ;; org-enable-github-support t
           ;; org-enable-org-journal-support t
@@ -71,8 +81,12 @@ This function should only modify configuration layer settings."
      sql
      ;; syntax-checking
      systemd
+     themes-megapack
      toml
      treemacs
+     (tree-sitter :variables tree-sitter-syntax-highlight-enable t
+                  tree-sitter-fold-enable t
+                  tree-sitter-fold-indicators-enable nil)
      version-control
      (xclipboard :variables xclipboard-enable-cliphist nil
                  xclipboard-copy-command "wl-copy"
@@ -251,8 +265,8 @@ It should only modify the values of Spacemacs settings."
    ;; package can be defined with `:package', or a theme can be defined with
    ;; `:location' to download the theme package, refer the themes section in
    ;; DOCUMENTATION.org for the full theme specifications.
-   dotspacemacs-themes '(spacemacs-dark
-                         spacemacs-light)
+   dotspacemacs-themes '(solarized-gruvbox-dark
+                         solarized-gruvbox-light)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -620,9 +634,8 @@ before packages are loaded."
   (setq counsel-rg-base-command
         '("rg" "-uu" "--max-columns" "240" "--with-filename" "--no-heading" "--line-number" "--color" "never" "%s"))
 
-
-
-
+  (add-to-list 'warning-suppress-log-types '(lsp-mode))
+  (add-to-list 'warning-suppress-types '(lsp-mode))
 
   ;; Configure winum to use frame-local window numbering
   (setq winum-scope 'frame-local)
